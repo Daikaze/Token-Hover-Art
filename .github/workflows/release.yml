@@ -1,42 +1,54 @@
-# Build the module package when a GitHub release is published.
-# The release gets two assets: module.json (the manifest that Foundry reads for updates) and module.zip.
-# The release tag must be "v" + the version in module.json, and the download URL in module.json must
-# point to this tag. Otherwise the job fails, so a release never ships a manifest that does not match its zip.
-name: Release
+name: Publish Foundry Module
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - "module.json"
+      - "scripts/**"
+      - "styles/**"
+      - "templates/**"
+      - "lang/**"
+      - "README.md"
+      - "LICENSE"
+      - ".github/workflows/release.yml"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  package:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the release tag
+      - name: Checkout module
         uses: actions/checkout@v4
-
-      - name: Check that module.json matches the release tag
+      - name: Validate manifest and build ZIP
+        shell: bash
         run: |
-          TAG="${GITHUB_REF_NAME}"
+          set -euo pipefail
           VERSION="$(jq -r .version module.json)"
+          TAG="v${VERSION}"
           DOWNLOAD="$(jq -r .download module.json)"
-          EXPECTED_DOWNLOAD="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/module.zip"
-          if [ "${TAG}" != "v${VERSION}" ]; then
-            echo "::error::Release tag ${TAG} does not match module.json version ${VERSION} (expected tag v${VERSION})."
+          EXPECTED="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/module.zip"
+          if [ "${DOWNLOAD}" != "${EXPECTED}" ]; then
+            echo "::error::module.json download URL must be ${EXPECTED}"
             exit 1
           fi
-          if [ "${DOWNLOAD}" != "${EXPECTED_DOWNLOAD}" ]; then
-            echo "::error::module.json download is ${DOWNLOAD}, expected ${EXPECTED_DOWNLOAD}."
-            exit 1
-          fi
-
-      - name: Build module.zip
-        run: zip -r module.zip module.json README.md LICENSE lang scripts styles templates
-
-      - name: Attach the assets to the release
+          zip -q -r module.zip module.json README.md LICENSE lang scripts styles templates
+      - name: Create or update GitHub release
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${GITHUB_REF_NAME}" module.json module.zip --clobber
+        run: |
+          set -euo pipefail
+          VERSION="$(jq -r .version module.json)"
+          TAG="v${VERSION}"
+          if gh release view "${TAG}" > /dev/null 2>&1; then
+            gh release upload "${TAG}" module.json module.zip --clobber
+          else
+            gh release create "${TAG}" module.json module.zip \
+              --target "${GITHUB_SHA}" \
+              --title "Token Hover Art ${TAG}" \
+              --notes "Foundry VTT v14: unscaled floating art gallery, uncropped portraits and screen-aware HUD positioning."
+          fi
