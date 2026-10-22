@@ -169,7 +169,7 @@ function showDisplay(token, path) {
   caption.textContent = showName ? token.document.name : "";
   caption.hidden = !showName;
 
-  if ( !isDragging() ) applyDisplayLayout(display);
+  if ( !isDragging() ) applyDisplayLayout(display, token);
   applyAppearance(display);
   shownToken = token;
   display.classList.add("visible");
@@ -236,7 +236,7 @@ function getElement() {
   const handles = ["nw", "ne", "sw", "se"].map(c => `<div class="tha-resize-handle" data-corner="${c}"></div>`);
   element.innerHTML = `<div class="tha-media"></div><div class="tha-caption" hidden></div>${handles.join("")}`;
   document.body.append(element);
-  makeDisplayInteractive(element, hideIfNotHovered);
+  makeDisplayInteractive(element, hideIfNotHovered, () => shownToken);
   return element;
 }
 

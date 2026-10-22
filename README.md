@@ -2,6 +2,15 @@
 
 This is a Foundry VTT v14 adaptation of the original [Token Hover Art by b1o](https://github.com/b1o/foundryvtt-token-hover-art). The original MIT license and existing flags are preserved.
 
+## v0.5.1 — independent size for each character
+
+- Hold **Ctrl** and drag a corner handle of the hover art to resize **only that character**.
+- Other characters keep their own saved sizes, or the default world maximum height if not resized.
+- Different tokens of one Actor share the same size, including tokens in different scenes.
+- As before, the saved sizes are **per viewer** (client-side), not forced on all players.
+- Ctrl-dragging the image body still moves its position as before.
+- The old global custom size is no longer imposed on every image.
+
 ## v0.5.0 fixes
 
 - A floating token HUD gallery is attached to the viewport instead of the canvas-scaled HUD.
@@ -60,7 +69,7 @@ Then enable **Token Hover Art** in your world under **Game Settings → Manage M
 3. Optional: click the star to make an image the default for new tokens of this actor.
 4. Right-click a token. Click the **images** icon in the left column of the Token HUD. Then select an image, or select the "no hover art" tile. Drag the grip in the bottom-left corner of the palette to resize it; each user keeps their own size.
 5. GMs can click the eye icon in the palette to make the hover art secret. Only GMs and owners see secret hover art.
-6. To move or resize the hover art: hover a token so the image shows, then hold **Ctrl**. The image gets a dashed outline, corner handles, and stays open. Drag the image to move it, or drag a corner handle to resize it. A resize keeps the aspect ratio of each image, and the opposite corner stays in place. The position and size apply only to you. To go back to the corner and the maximum height, turn off **Use my dragged position and size** in the module settings.
+6. To move or resize the hover art: hover a token so the image shows, then hold **Ctrl**. The image gets a dashed outline, corner handles, and stays open. Drag the image to move it, or drag a corner handle to resize it. A resize keeps the aspect ratio of each image, and the opposite corner stays in place. The position and each individual size apply only to your view. To go back to the corner and the maximum height, turn off **Use my dragged position and size** in the module settings.
 
 ## Folder filters
 
@@ -135,7 +144,8 @@ The release workflow then checks that the tag matches `module.json`, builds `mod
 | Show hover art | Client | On |
 | Use my dragged position and size | Client (turned on by a Ctrl-drag) | Off |
 | Dragged position | Client (hidden, set with Ctrl-drag) | None |
-| Dragged size (image height, % of screen) | Client (hidden, set with a Ctrl corner drag) | None |
+| Legacy global dragged size | Client (hidden; no longer applied) | None |
+| Character sizes (image height, % of screen) | Client (hidden, one value per Actor) | None |
 | Palette size | Client (hidden, set with the resize grip) | 228 × 290 px |
 
 The color settings accept `#rrggbb` or `#rrggbbaa`; the last two digits are the opacity. In the settings window, each color has a color picker and an opacity slider next to the text field. An invalid value falls back to the default.

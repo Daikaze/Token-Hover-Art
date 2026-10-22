@@ -1,11 +1,13 @@
 import { MODULE_ID, SETTINGS, POSITIONS } from "./constants.mjs";
 import { getSetting } from "./settings.mjs";
+import { getBaseActor } from "./hover-art-data.mjs";
 
 /*
  * The layout of the hover display: where it is and how large its image is.
  * The default is a screen corner (world setting) and the world maximum height. Each user can move and resize the
- * display while they hold Ctrl (see hover-display.mjs). The result is saved for this user, and it replaces the
- * default while the client setting "Use my dragged position and size" is on.
+ * display while they hold Ctrl (see hover-display.mjs). Position remains per viewer; image size
+ * is saved separately for each character (and per viewer). Unmodified characters use the world default.
+ * "Use my dragged position and size" controls the customized position and per-character sizes.
  */
 
 /**
@@ -48,10 +50,11 @@ export function isDragging() {
 /**
  * Apply the position and the size: the dragged values of this user, or else the defaults.
  * @param {HTMLElement} display
+ * @param {Token} token  Character whose size should be applied.
  */
-export function applyDisplayLayout(display) {
+export function applyDisplayLayout(display, token) {
   applyPosition(display);
-  applySize(display);
+  applySize(display, token);
 }
 
 /**
@@ -59,13 +62,17 @@ export function applyDisplayLayout(display) {
  * When the drag ends, save the new layout for this user and switch the user to the dragged layout.
  * @param {HTMLElement} display
  * @param {function(): void} onDragEnd  Called after each drag, also when the drag was only a click.
+ * @param {function(): Token|null} getToken  Token shown at pointerdown.
  */
-export function makeDisplayInteractive(display, onDragEnd) {
+export function makeDisplayInteractive(display, onDragEnd, getToken) {
   display.addEventListener("pointerdown", event => {
     if ( (event.button !== 0) || !display.classList.contains("moving") ) return;
     event.preventDefault();
     const corner = event.target.closest(".tha-resize-handle")?.dataset.corner;
-    const handler = corner ? createResizeHandler(display, corner) : createMoveHandler(display);
+    // Bind the resize to its original character, even if hover changes mid-drag.
+    const token = getToken();
+    if ( !token ) return;
+    const handler = corner ? createResizeHandler(display, corner, token) : createMoveHandler(display);
     runDrag(display, event, handler, onDragEnd);
   });
 }
@@ -96,9 +103,10 @@ function applyPosition(display) {
  * A dragged size sets the image height. Without it, the image keeps its natural size, limited by the world
  * maximum height. The CSS reads the three variables (see token-hover-art.css).
  * @param {HTMLElement} display
+ * @param {Token} token
  */
-function applySize(display) {
-  const custom = getCustomSize();
+function applySize(display, token) {
+  const custom = getCustomSize(token);
   if ( custom ) {
     setSizeVariables(display, {imageHeight: `${custom.height * 100}vh`, maxHeight: "none", maxWidth: CUSTOM_MAX_WIDTH});
   }
@@ -179,9 +187,10 @@ function createMoveHandler(display) {
  * stays inside the screen.
  * @param {HTMLElement} display
  * @param {"nw"|"ne"|"sw"|"se"} corner  The corner that the user drags.
+ * @param {Token} token  Character whose image is being resized.
  * @returns {DragHandler}
  */
-function createResizeHandler(display, corner) {
+function createResizeHandler(display, corner, token) {
   const media = display.querySelector(".tha-media img, .tha-media video");
   const start = display.getBoundingClientRect();
   const image = media.getBoundingClientRect();
@@ -213,7 +222,8 @@ function createResizeHandler(display, corner) {
     },
     save: () => saveLayout({
       position: toCustomPosition(display.getBoundingClientRect()),
-      size: {height: clamp(media.getBoundingClientRect().height / window.innerHeight, 0, 1)}
+      size: {height: clamp(media.getBoundingClientRect().height / window.innerHeight, 0, 1)},
+      token
     })
   };
 }
@@ -236,20 +246,33 @@ function getCustomPosition() {
 /**
  * @returns {CustomSize|null}  The dragged size, if the user uses the dragged layout and it is valid.
  */
-function getCustomSize() {
+function getCharacterKey(token) {
+  // Unlinked synthetic tokens resolve to the original world Actor; all scene copies share a size.
+  return getBaseActor(token?.actor)?.uuid ?? token?.document?.uuid ?? null;
+}
+
+function getCustomSize(token) {
   if ( !getSetting(SETTINGS.USE_CUSTOM_POSITION) ) return null;
-  const size = getSetting(SETTINGS.CUSTOM_SIZE);
-  return (Number.isFinite(size?.height) && (size.height > 0)) ? size : null;
+  const key = getCharacterKey(token);
+  if ( !key ) return null;
+  const size = getSetting(SETTINGS.CHARACTER_SIZES)?.[key];
+  return (Number.isFinite(size?.height) && size.height > 0 && size.height <= 1) ? size : null;
 }
 
 /**
  * Save a dragged layout, and switch this user to the dragged layout. A move saves only the position; a resize
  * saves the position and the size.
- * @param {{position: CustomPosition, size?: CustomSize}} layout
+ * @param {{position: CustomPosition, size?: CustomSize, token?: Token}} layout
  */
-async function saveLayout({position, size}) {
+async function saveLayout({position, size, token}) {
   await game.settings.set(MODULE_ID, SETTINGS.CUSTOM_POSITION, position);
-  if ( size ) await game.settings.set(MODULE_ID, SETTINGS.CUSTOM_SIZE, size);
+  if ( size ) {
+    const key = getCharacterKey(token);
+    if ( key ) {
+      const sizes = getSetting(SETTINGS.CHARACTER_SIZES) ?? {};
+      await game.settings.set(MODULE_ID, SETTINGS.CHARACTER_SIZES, {...sizes, [key]: size});
+    }
+  }
   await game.settings.set(MODULE_ID, SETTINGS.USE_CUSTOM_POSITION, true);
 }
 

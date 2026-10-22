@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout module
         uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          for file in scripts/*.mjs; do node --check "$file"; done
       - name: Validate manifest and build ZIP
         shell: bash
         run: |

@@ -26,7 +26,8 @@ export const SETTINGS = Object.freeze({
   PALETTE_SIZE: "paletteSize",
   USE_CUSTOM_POSITION: "useCustomPosition",
   CUSTOM_POSITION: "customPosition",
-  CUSTOM_SIZE: "customSize"
+  CUSTOM_SIZE: "customSize", // Legacy global setting; no longer controls character size.
+  CHARACTER_SIZES: "characterSizes"
 });
 
 export const POSITIONS = Object.freeze({

@@ -139,12 +139,21 @@ export function registerSettings(onDisplayChange) {
     onChange: onDisplayChange
   });
 
-  // The image height that this user resized the display to. See display-layout.mjs for the format.
+  // Legacy setting retained to preserve data from older installations; no longer used for layout.
   game.settings.register(MODULE_ID, SETTINGS.CUSTOM_SIZE, {
     scope: "client",
     config: false,
     type: Object,
     default: null,
+    onChange: onDisplayChange
+  });
+
+  // A separate saved image height for every character (base Actor UUID), local to each viewer.
+  game.settings.register(MODULE_ID, SETTINGS.CHARACTER_SIZES, {
+    scope: "client",
+    config: false,
+    type: Object,
+    default: {},
     onChange: onDisplayChange
   });
 
