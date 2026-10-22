@@ -1,0 +1,9 @@
+# Local build output
+module.zip
+dist/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

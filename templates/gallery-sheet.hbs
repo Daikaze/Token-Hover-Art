@@ -1,0 +1,135 @@
+<form class="tha-gallery" autocomplete="off">
+  <p class="notes">{{localize "TOKEN_HOVER_ART.Gallery.Hint"}}</p>
+
+  <div class="tha-gallery-scroll">
+    {{!-- Manual images --}}
+    <h3 class="tha-section-title">{{localize "TOKEN_HOVER_ART.Gallery.ImagesTitle"}}</h3>
+    {{#if manualImages.length}}
+    <div class="tha-gallery-grid">
+      {{#each manualImages}}
+      <figure class="tha-gallery-item {{#if isDefault}}default{{/if}}" data-index="{{index}}" data-path="{{path}}">
+        {{#if isVideo}}
+        <video src="{{path}}" muted loop autoplay playsinline></video>
+        {{else}}
+        <img src="{{path}}" alt="" loading="lazy">
+        {{/if}}
+        <figcaption>{{path}}</figcaption>
+        {{#if ../editable}}
+        <nav class="tha-gallery-controls">
+          <a data-action="default" data-tooltip="TOKEN_HOVER_ART.Gallery.Default">
+            <i class="{{#if isDefault}}fas{{else}}far{{/if}} fa-star"></i>
+          </a>
+          <a data-action="move-left" data-tooltip="TOKEN_HOVER_ART.Gallery.MoveLeft" {{#if isFirst}}class="disabled"{{/if}}>
+            <i class="fas fa-arrow-left"></i>
+          </a>
+          <a data-action="move-right" data-tooltip="TOKEN_HOVER_ART.Gallery.MoveRight" {{#if isLast}}class="disabled"{{/if}}>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+          <a data-action="remove" data-tooltip="TOKEN_HOVER_ART.Gallery.Remove">
+            <i class="fas fa-trash"></i>
+          </a>
+        </nav>
+        {{/if}}
+      </figure>
+      {{/each}}
+    </div>
+    {{else}}
+    <p class="tha-gallery-empty">{{localize "TOKEN_HOVER_ART.Gallery.Empty"}}</p>
+    {{/if}}
+
+    {{!-- Folder sources --}}
+    <h3 class="tha-section-title">
+      {{localize "TOKEN_HOVER_ART.Folders.Title"}}
+      {{#if canScan}}{{#if folders.length}}
+      <a class="tha-section-control" data-action="rescan-folders" data-tooltip="TOKEN_HOVER_ART.Folders.Rescan">
+        <i class="fas fa-sync"></i>
+      </a>
+      {{/if}}{{/if}}
+    </h3>
+    {{#each folders}}
+    <section class="tha-folder" data-index="{{index}}">
+      <header class="tha-folder-header">
+        <i class="fas fa-folder-open"></i>
+        <span class="tha-folder-path">{{folder}}</span>
+        {{#if ../canScan}}
+        <input type="text" class="tha-folder-filter" value="{{filter}}" data-tooltip="TOKEN_HOVER_ART.Folders.FilterTooltip">
+        <a data-action="remove-folder" data-tooltip="TOKEN_HOVER_ART.Folders.Remove"><i class="fas fa-trash"></i></a>
+        {{else}}
+        <code class="tha-folder-filter-text">{{filter}}</code>
+        {{/if}}
+        <span class="tha-folder-count">{{count}}</span>
+      </header>
+      {{#if images.length}}
+      <div class="tha-gallery-grid">
+        {{#each images}}
+        <figure class="tha-gallery-item {{#if isDefault}}default{{/if}}" data-path="{{path}}">
+          {{#if isVideo}}
+          <video src="{{path}}" muted loop autoplay playsinline></video>
+          {{else}}
+          <img src="{{path}}" alt="" loading="lazy">
+          {{/if}}
+          <figcaption>{{path}}</figcaption>
+          {{#if ../../editable}}
+          <nav class="tha-gallery-controls">
+            <a data-action="default" data-tooltip="TOKEN_HOVER_ART.Gallery.Default">
+              <i class="{{#if isDefault}}fas{{else}}far{{/if}} fa-star"></i>
+            </a>
+          </nav>
+          {{/if}}
+        </figure>
+        {{/each}}
+      </div>
+      {{else}}
+      <p class="tha-gallery-empty">{{localize "TOKEN_HOVER_ART.Folders.NoMatches"}}</p>
+      {{/if}}
+    </section>
+    {{else}}
+    <p class="tha-gallery-empty">{{localize "TOKEN_HOVER_ART.Folders.Empty"}}</p>
+    {{/each}}
+  </div>
+
+  {{#if editable}}
+  <div class="form-group">
+    <label>{{localize "TOKEN_HOVER_ART.Gallery.AddPath"}}</label>
+    <div class="form-fields">
+      <input type="text" name="path" placeholder="{{localize "TOKEN_HOVER_ART.Gallery.PathPlaceholder"}}">
+      {{#if canBrowse}}
+      <button type="button" class="tha-browse" data-action="browse"
+              data-tooltip="{{#if canUpload}}TOKEN_HOVER_ART.Gallery.BrowseUpload{{else}}TOKEN_HOVER_ART.Gallery.Browse{{/if}}">
+        <i class="fas fa-file-import fa-fw"></i>
+      </button>
+      {{/if}}
+      <button type="button" class="tha-add" data-action="add-path">
+        <i class="fas fa-plus"></i> {{localize "TOKEN_HOVER_ART.Gallery.AddButton"}}
+      </button>
+    </div>
+    {{#unless canBrowse}}
+    <p class="hint">{{localize "TOKEN_HOVER_ART.Gallery.NoBrowsePermission"}}</p>
+    {{/unless}}
+  </div>
+
+  {{#if canScan}}
+  <div class="form-group">
+    <label>{{localize "TOKEN_HOVER_ART.Folders.Add"}}</label>
+    <div class="form-fields">
+      <input type="text" name="folderPath" placeholder="{{localize "TOKEN_HOVER_ART.Folders.PathPlaceholder"}}">
+      <button type="button" class="tha-browse" data-action="browse-folder" data-tooltip="TOKEN_HOVER_ART.Folders.Browse">
+        <i class="fas fa-folder-open fa-fw"></i>
+      </button>
+      <input type="text" name="folderFilter" class="tha-folder-filter-new" placeholder="{{defaultFilter}}"
+             data-tooltip="TOKEN_HOVER_ART.Folders.NewFilterTooltip">
+      <button type="button" class="tha-add" data-action="add-folder">
+        <i class="fas fa-plus"></i> {{localize "TOKEN_HOVER_ART.Gallery.AddButton"}}
+      </button>
+    </div>
+    <p class="hint">{{localize "TOKEN_HOVER_ART.Folders.Hint"}}</p>
+  </div>
+  {{/if}}
+
+  <div class="form-group">
+    <label>{{localize "TOKEN_HOVER_ART.Gallery.DefaultSecret"}}</label>
+    <input type="checkbox" name="defaultSecret" {{checked defaultSecret}}>
+    <p class="hint">{{localize "TOKEN_HOVER_ART.Gallery.DefaultSecretHint"}}</p>
+  </div>
+  {{/if}}
+</form>

@@ -1,0 +1,39 @@
+<div class="control-icon tha-control {{#if open}}active{{/if}}" data-tooltip="TOKEN_HOVER_ART.HUD.Toggle">
+  <i class="fas fa-images"></i>
+  <div class="tha-palette {{#if open}}active{{/if}}"
+       style="--tha-palette-width: {{size.width}}px; --tha-palette-height: {{size.height}}px;">
+    <header class="tha-palette-header">
+      <span class="tha-palette-title">{{localize "TOKEN_HOVER_ART.HUD.Title"}}</span>
+      {{#if isGM}}
+      <a class="tha-palette-button {{#if secret}}active{{/if}}" data-tha-action="secret"
+         data-tooltip="{{#if secret}}TOKEN_HOVER_ART.HUD.SecretOn{{else}}TOKEN_HOVER_ART.HUD.SecretOff{{/if}}">
+        <i class="fas {{#if secret}}fa-eye-slash{{else}}fa-eye{{/if}}"></i>
+      </a>
+      {{/if}}
+      {{#if canManage}}
+      <a class="tha-palette-button" data-tha-action="manage" data-tooltip="TOKEN_HOVER_ART.HUD.Manage">
+        <i class="fas fa-cog"></i>
+      </a>
+      {{/if}}
+    </header>
+    <div class="tha-palette-grid">
+      <div class="tha-choice tha-choice-none {{#unless hasSelection}}active{{/unless}}" data-tha-action="clear"
+           data-tooltip="TOKEN_HOVER_ART.HUD.None">
+        <i class="fas fa-ban"></i>
+      </div>
+      {{#each images}}
+      <div class="tha-choice {{#if active}}active{{/if}}" data-tha-action="select" data-path="{{path}}">
+        {{#if isVideo}}
+        <video src="{{path}}" muted loop autoplay playsinline></video>
+        {{else}}
+        <img src="{{path}}" alt="" loading="lazy">
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+    {{#unless images.length}}
+    <p class="tha-palette-empty">{{localize "TOKEN_HOVER_ART.HUD.Empty"}}</p>
+    {{/unless}}
+    <div class="tha-palette-resize" data-tooltip="TOKEN_HOVER_ART.HUD.Resize"></div>
+  </div>
+</div>

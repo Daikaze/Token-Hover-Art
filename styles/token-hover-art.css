@@ -1,0 +1,562 @@
+/* ---------------------------------------- */
+/* Theme tokens                             */
+/* ---------------------------------------- */
+/* The module colors come from the core CSS variables. Each fallback is the v11 value, for a core version that
+   renames or removes a variable. The selectors use only module classes, not core ids such as #token-hud. */
+.tha-control,
+#token-hover-art-display,
+.token-hover-art {
+  --tha-text-1: var(--color-text-light-1, #eee);
+  --tha-text-2: var(--color-text-light-2, #ddd);
+  --tha-text-5: var(--color-text-light-5, #aaa);
+  --tha-border-dark: var(--color-border-dark-3, #333);
+  --tha-border-light: var(--color-border-light-2, #999);
+  --tha-highlight: var(--color-border-highlight, #ff6400);
+  --tha-glow: var(--color-shadow-highlight, #ff6400);
+  --tha-shadow: var(--color-shadow-dark, #000);
+  --tha-font-mono: var(--font-mono, monospace);
+}
+
+/* ---------------------------------------- */
+/* Token HUD palette                        */
+/* The look copies the core status effects  */
+/* palette of the Token HUD.                */
+/* ---------------------------------------- */
+.control-icon.tha-control {
+  position: relative;
+}
+
+/* The template sets --tha-palette-width and --tha-palette-height from the paletteSize client setting. */
+.tha-control .tha-palette {
+  visibility: hidden;
+  position: absolute;
+  right: 65px;
+  top: 0;
+  width: var(--tha-palette-width);
+  padding: 4px 4px 10px;
+  box-sizing: content-box;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 15px var(--tha-shadow);
+  border: 1px solid var(--tha-border-dark);
+  border-radius: 4px;
+  pointer-events: all;
+  cursor: default;
+  font-size: var(--font-size-14, 0.875rem);
+  line-height: normal;
+  text-align: left;
+}
+
+.tha-control .tha-palette.active {
+  visibility: visible;
+}
+
+.tha-control .tha-palette-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 2px 4px;
+  color: var(--tha-text-2);
+}
+
+.tha-control .tha-palette-title {
+  flex: 1;
+  font-weight: bold;
+}
+
+.tha-control .tha-palette-button {
+  width: 22px;
+  text-align: center;
+  color: var(--tha-text-5);
+  cursor: pointer;
+}
+
+.tha-control .tha-palette-button:hover,
+.tha-control .tha-palette-button.active {
+  color: var(--tha-text-1);
+}
+
+/* The column count follows the palette width. The stable gutter keeps space for the vertical scrollbar,
+   so the scrollbar never pushes the last column out and causes a horizontal scrollbar. */
+.tha-control .tha-palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 68px);
+  gap: 6px;
+  max-height: var(--tha-palette-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}
+
+.tha-control .tha-palette-resize {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  cursor: nesw-resize;
+  background: linear-gradient(45deg, var(--tha-text-5) 0 2px, transparent 2px 5px,
+    var(--tha-text-5) 5px 7px, transparent 7px);
+  opacity: 0.6;
+  touch-action: none;
+}
+
+.tha-control .tha-palette-resize:hover {
+  opacity: 1;
+}
+
+.tha-control .tha-choice {
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--tha-border-dark);
+  border-radius: 4px;
+  overflow: hidden;
+  opacity: 0.6;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.tha-control .tha-choice:hover {
+  opacity: 0.85;
+}
+
+.tha-control .tha-choice.active {
+  opacity: 1;
+  border-color: var(--tha-highlight);
+  box-shadow: 0 0 6px var(--tha-glow);
+}
+
+/* Core styles "img" in HUD control icons (margin, opacity). This rule restores the thumbnail look. */
+.tha-control .tha-choice img,
+.tha-control .tha-choice video {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: cover;
+  opacity: 1;
+  border: none;
+}
+
+.tha-control .tha-choice-none {
+  font-size: var(--font-size-24, 1.5rem);
+  color: var(--tha-text-5);
+}
+
+.tha-control .tha-palette-empty {
+  margin: 6px 2px 2px;
+  color: var(--tha-text-5);
+}
+
+
+/* --------------------------------------------------- */
+/* v14: floating HUD gallery in unscaled viewport space */
+/* --------------------------------------------------- */
+.control-icon.tha-control { position: relative; }
+.control-icon.tha-control.active { border-color: var(--color-border-highlight, #ffa320); }
+.tha-floating-palette {
+  --tha-accent: var(--color-border-highlight, #ffa320);
+  position: fixed;
+  display: none;
+  flex-direction: column;
+  z-index: 10010;
+  box-sizing: border-box;
+  width: var(--tha-palette-width, 350px);
+  max-width: calc(100vw - 16px);
+  padding: 10px;
+  color: var(--color-text-primary, #f4f0e8);
+  background: rgba(23, 23, 27, .97);
+  border: 1px solid rgba(190, 170, 128, .55);
+  border-radius: 9px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .75);
+  font: 14px/1.35 var(--font-primary, 'Signika', sans-serif);
+  text-align: left;
+  pointer-events: auto;
+  isolation: isolate;
+}
+.tha-floating-palette.active { display: flex; }
+.tha-floating-palette .tha-palette-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-height: 27px;
+  padding: 0 3px 8px;
+  margin: 0 0 8px;
+  border-bottom: 1px solid rgba(190, 170, 128, .28);
+}
+.tha-floating-palette .tha-palette-title { flex: 1; min-width: 0; font-weight: bold; }
+.tha-floating-palette .tha-palette-button {
+  display: inline-flex;
+  flex: 0 0 30px;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  border-radius: 5px;
+  color: var(--color-text-secondary, #aaa);
+  cursor: pointer;
+}
+.tha-floating-palette .tha-palette-button:hover,
+.tha-floating-palette .tha-palette-button.active { color: inherit; background: rgba(255, 255, 255, .11); }
+.tha-floating-palette .tha-palette-grid {
+  display: grid;
+  flex: 0 1 auto;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 8px;
+  min-height: 0;
+  max-height: var(--tha-palette-height, 320px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: 3px;
+  margin: -3px;
+}
+.tha-floating-palette .tha-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  padding: 3px;
+  border: 1px solid rgba(190, 170, 128, .35);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, .4);
+  opacity: .88;
+  cursor: pointer;
+  overflow: hidden;
+}
+.tha-floating-palette .tha-choice:hover { border-color: var(--tha-accent); opacity: 1; }
+.tha-floating-palette .tha-choice.active {
+  border: 2px solid var(--tha-accent);
+  opacity: 1;
+  box-shadow: 0 0 6px var(--tha-accent);
+}
+.tha-floating-palette .tha-choice img,
+.tha-floating-palette .tha-choice video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 3px;
+  object-fit: contain;
+  image-rendering: auto;
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+.tha-floating-palette .tha-choice-none { font-size: 24px; }
+.tha-floating-palette .tha-palette-empty { margin: 8px 4px; }
+.tha-floating-palette .tha-palette-resize {
+  align-self: flex-end;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 2px -4px -5px 0;
+  cursor: nwse-resize;
+  touch-action: none;
+  background: linear-gradient(135deg,
+    transparent 55%, #aaa 56%, #aaa 62%,
+    transparent 63%, transparent 73%, #aaa 74%, #aaa 80%, transparent 81%);
+}
+@media (max-width: 450px) {
+  .tha-floating-palette .tha-palette-grid { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
+  .tha-floating-palette .tha-choice { height: 86px; }
+}
+
+/* ---------------------------------------- */
+/* Hover display                            */
+/* ---------------------------------------- */
+#token-hover-art-display {
+  --tha-max-height: 40vh;
+  position: fixed;
+  z-index: calc(var(--z-index-ui, 60) + 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  --tha-padding: 4px;
+  /* display-layout.mjs sets --tha-image-height, --tha-max-height, and --tha-max-width from the layout. */
+  max-width: var(--tha-max-width, 40vw);
+  padding: var(--tha-padding);
+  /* hover-display.mjs sets these two variables from the module settings. */
+  background: var(--tha-display-background, rgba(0, 0, 0, 0.6));
+  border: var(--tha-display-border, 1px solid var(--tha-border-dark));
+  border-radius: 6px;
+  box-shadow: 0 0 15px var(--tha-shadow);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 150ms ease-in-out, visibility 0s linear 150ms;
+}
+
+#token-hover-art-display.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 150ms ease-in-out, visibility 0s;
+}
+
+/* "Show border" is off: no frame at all, so only the image shows. */
+#token-hover-art-display.frameless {
+  --tha-padding: 0px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* Move mode (Ctrl held): the display takes pointer input so the user can drag it. */
+#token-hover-art-display.visible.moving {
+  pointer-events: auto;
+  cursor: move;
+  outline: 2px dashed var(--tha-highlight);
+  outline-offset: -2px;
+  user-select: none;
+}
+
+#token-hover-art-display.moving img,
+#token-hover-art-display.moving video {
+  pointer-events: none;
+}
+
+/* Corner handles for the resize. They show only in move mode, inside the corners, so they stay on screen
+   when the display sits in a screen corner. */
+#token-hover-art-display .tha-resize-handle {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  background: var(--tha-highlight);
+  border: 1px solid var(--tha-shadow);
+  border-radius: 2px;
+}
+
+#token-hover-art-display.visible.moving .tha-resize-handle {
+  display: block;
+}
+
+#token-hover-art-display .tha-resize-handle[data-corner="nw"] { top: 0; left: 0; cursor: nwse-resize; }
+#token-hover-art-display .tha-resize-handle[data-corner="ne"] { top: 0; right: 0; cursor: nesw-resize; }
+#token-hover-art-display .tha-resize-handle[data-corner="sw"] { bottom: 0; left: 0; cursor: nesw-resize; }
+#token-hover-art-display .tha-resize-handle[data-corner="se"] { bottom: 0; right: 0; cursor: nwse-resize; }
+
+/* Core gives every img "border: 1px solid". The display border comes only from the border settings. */
+#token-hover-art-display .tha-media img,
+#token-hover-art-display .tha-media video {
+  display: block;
+  width: auto;
+  height: var(--tha-image-height, auto);
+  max-width: calc(var(--tha-max-width, 40vw) - (2 * var(--tha-padding)));
+  max-height: var(--tha-max-height);
+  object-fit: contain;
+  border: none;
+  border-radius: 4px;
+}
+
+/* The name lies on the bottom edge of the image. The insets match the padding of the display, so the band
+   covers the image edge to edge. The gradient darkens only the bottom of the image, so light text stays
+   readable on light and dark images. */
+#token-hover-art-display .tha-caption {
+  position: absolute;
+  left: var(--tha-padding);
+  right: var(--tha-padding);
+  bottom: var(--tha-padding);
+  padding: 18px 8px 6px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0));
+  color: var(--tha-text-1);
+  font-family: var(--font-primary, "Signika", sans-serif);
+  font-size: var(--font-size-16, 1rem);
+  text-align: center;
+  text-shadow: 0 0 4px var(--tha-shadow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+/* ---------------------------------------- */
+/* Settings window: color fields            */
+/* ---------------------------------------- */
+/* color-fields.mjs adds a color picker and an alpha slider next to the text field of each color setting.
+   The selectors are specific enough to win over the core rules for inputs in settings fields. */
+.form-group .form-fields input.tha-color-picker {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 26px;
+  padding: 0 2px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.form-group .form-fields input.tha-alpha-slider {
+  flex: 0 0 80px;
+  width: 80px;
+}
+
+.form-group .form-fields .tha-alpha-value {
+  flex: 0 0 36px;
+  text-align: right;
+}
+
+/* ---------------------------------------- */
+/* Gallery sheet                            */
+/* ---------------------------------------- */
+.token-hover-art .tha-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Core gives .notes "flex: 0 0 100%" for row layouts. In this column it would take the full height. */
+.token-hover-art .tha-gallery > * {
+  flex: none;
+}
+
+.token-hover-art .tha-gallery-scroll {
+  max-height: 460px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.token-hover-art .tha-section-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 4px;
+  border-bottom: 1px solid var(--tha-border-light);
+}
+
+.token-hover-art .tha-section-control {
+  margin-left: auto;
+  font-size: var(--font-size-14, 0.875rem);
+}
+
+.token-hover-art .tha-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.token-hover-art .tha-folder {
+  margin-bottom: 8px;
+}
+
+.token-hover-art .tha-folder-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.token-hover-art .tha-folder-path {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  text-align: left;
+  font-weight: bold;
+}
+
+.token-hover-art .tha-folder-header input.tha-folder-filter {
+  flex: 0 0 140px;
+  height: 24px;
+  font-family: var(--tha-font-mono);
+}
+
+.token-hover-art .tha-folder-count {
+  flex: 0 0 auto;
+  min-width: 24px;
+  padding: 0 6px;
+  border-radius: 8px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.token-hover-art input.tha-folder-filter-new {
+  flex: 0 0 110px;
+  font-family: var(--tha-font-mono);
+}
+
+/* The browse button fills the field next to it, as core file picker buttons do. Add is the only add action.
+   Core gives buttons "width: 100%", so the buttons set their own width and the path fields take the rest. */
+.token-hover-art .form-fields input[name="path"],
+.token-hover-art .form-fields input[name="folderPath"] {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.token-hover-art .form-fields button.tha-browse {
+  flex: 0 0 32px;
+  width: 32px;
+}
+
+.token-hover-art .form-fields button.tha-add {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.token-hover-art .form-fields button.tha-add:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.token-hover-art .tha-gallery-item {
+  position: relative;
+  margin: 0;
+  border: 1px solid var(--tha-border-light);
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.token-hover-art .tha-gallery-item.default {
+  border-color: var(--tha-highlight);
+  box-shadow: 0 0 6px var(--tha-glow);
+}
+
+.token-hover-art .tha-gallery-item img,
+.token-hover-art .tha-gallery-item video {
+  display: block;
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  border: none;
+}
+
+.token-hover-art .tha-gallery-item figcaption {
+  padding: 2px 4px;
+  font-size: var(--font-size-11, 0.6875rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: left;
+}
+
+.token-hover-art .tha-gallery-controls {
+  display: flex;
+  justify-content: space-around;
+  padding: 2px 0 4px;
+}
+
+.token-hover-art .tha-gallery-controls a.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.token-hover-art .tha-gallery-empty {
+  text-align: center;
+  font-style: italic;
+}
