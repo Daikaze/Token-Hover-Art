@@ -2,11 +2,19 @@
 
 This is a Foundry VTT v14 adaptation of the original [Token Hover Art by b1o](https://github.com/b1o/foundryvtt-token-hover-art). The original MIT license and existing flags are preserved.
 
+## v0.5.2 — per-NPC hover art size
+
+- NPC art now also keeps its own size when you hold **Ctrl** and drag a corner.
+- Each NPC token is sized independently (two goblins using the same NPC Actor can have different art sizes).
+- Existing PC character settings are preserved; all tokens representing the same PC use that character's saved size.
+- Sizes remain client-specific like v0.5.1; no new permissions, token flags or player-visible changes.
+- A never-resized NPC uses the standard world maximum height.
+
 ## v0.5.1 — independent size for each character
 
 - Hold **Ctrl** and drag a corner handle of the hover art to resize **only that character**.
 - Other characters keep their own saved sizes, or the default world maximum height if not resized.
-- Different tokens of one Actor share the same size, including tokens in different scenes.
+- Different tokens of the same **PC character Actor** share the same size, including tokens in different scenes. **NPC tokens have separate sizes.**
 - As before, the saved sizes are **per viewer** (client-side), not forced on all players.
 - Ctrl-dragging the image body still moves its position as before.
 - The old global custom size is no longer imposed on every image.

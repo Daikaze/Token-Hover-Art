@@ -6,7 +6,7 @@ import { getBaseActor } from "./hover-art-data.mjs";
  * The layout of the hover display: where it is and how large its image is.
  * The default is a screen corner (world setting) and the world maximum height. Each user can move and resize the
  * display while they hold Ctrl (see hover-display.mjs). Position remains per viewer; image size
- * is saved separately for each character (and per viewer). Unmodified characters use the world default.
+ * is saved separately per PC Actor or per NPC token (and per viewer). Unmodified tokens use the world default.
  * "Use my dragged position and size" controls the customized position and per-character sizes.
  */
 
@@ -244,11 +244,24 @@ function getCustomPosition() {
 }
 
 /**
- * @returns {CustomSize|null}  The dragged size, if the user uses the dragged layout and it is valid.
+ * Stable key for the individual hover-art size.
+ * PCs stay grouped by their world Actor to preserve their existing saved sizes.
+ * NPCs use the Scene TokenDocument UUID so two goblins based on the same NPC
+ * Actor can have different-sized art. This also works for linked NPC tokens.
+ * Never key NPCs by their base Actor, or changing one token changes all copies.
+ * @param {Token|null} token
+ * @returns {string|null}
  */
-function getCharacterKey(token) {
-  // Unlinked synthetic tokens resolve to the original world Actor; all scene copies share a size.
-  return getBaseActor(token?.actor)?.uuid ?? token?.document?.uuid ?? null;
+export function getCharacterKey(token) {
+  const doc = token?.document;
+  if ( !doc ) return null;
+  const baseActor = getBaseActor(token.actor ?? doc.actor);
+  if ( baseActor?.type === "character" && baseActor.uuid ) return baseActor.uuid;
+  if ( typeof doc.uuid === "string" && doc.uuid ) return doc.uuid;
+
+  // Defensive fallback for synthetic or older TokenDocuments without a UUID.
+  const scene = doc.parent?.uuid ?? (doc.parent?.id ? `Scene.${doc.parent.id}` : null);
+  return scene && doc.id ? `${scene}.Token.${doc.id}` : null;
 }
 
 function getCustomSize(token) {

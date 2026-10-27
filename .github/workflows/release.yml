@@ -26,6 +26,8 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           for file in scripts/*.mjs; do node --check "$file"; done
+      - name: Test NPC and PC size isolation
+        run: node --test tests/*.test.mjs
       - name: Validate manifest and build ZIP
         shell: bash
         run: |
