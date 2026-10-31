@@ -1,8 +1,8 @@
 {
   "id": "token-hover-art",
   "title": "Token Hover Art",
-  "description": "Foundry v14 Token Hover Art with persistent individual sizing for PC characters and NPC tokens.",
-  "version": "0.5.2",
+  "description": "Foundry V14 Token Hover Art: native resizable ApplicationV2 gallery, persistent individual PC/NPC hover-art sizing, unscaled Token HUD palette and uncropped portraits.",
+  "version": "0.5.3",
   "authors": [
     {
       "name": "b1o",
@@ -15,7 +15,7 @@
   ],
   "url": "https://github.com/Daikaze/Token-Hover-Art",
   "manifest": "https://github.com/Daikaze/Token-Hover-Art/releases/latest/download/module.json",
-  "download": "https://github.com/Daikaze/Token-Hover-Art/releases/download/v0.5.2/module.zip",
+  "download": "https://github.com/Daikaze/Token-Hover-Art/releases/download/v0.5.3/module.zip",
   "bugs": "https://github.com/Daikaze/Token-Hover-Art/issues",
   "readme": "https://github.com/Daikaze/Token-Hover-Art#readme",
   "compatibility": {
