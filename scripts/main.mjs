@@ -2,7 +2,7 @@ import { TEMPLATES } from "./constants.mjs";
 import { registerSettings } from "./settings.mjs";
 import { addColorFields } from "./color-fields.mjs";
 import { getBaseActor, canManageGallery, hasModuleFlagChange } from "./hover-art-data.mjs";
-import { HoverArtGallery } from "./gallery-sheet.mjs";
+import { HoverArtGallery } from "./native-gallery.mjs";
 import { loadPaletteTemplate, onRenderTokenHUD, refreshTokenHUD, closeHoverArtPalette } from "./token-hud.mjs";
 import {
   activateMoveKey, onHoverToken, refreshTokenDisplay, onDeleteToken, preloadSceneArt, refreshDisplay, hideDisplay
@@ -53,6 +53,7 @@ Hooks.on("getActorSheetHeaderButtons", (sheet, buttons) => {
 Hooks.on("getHeaderControlsActorSheetV2", (sheet, controls) => {
   const actor = getGalleryActor(sheet.actor);
   if ( !actor ) return;
+  if (controls.some(control => control.action === "tokenHoverArtGallery")) return;
   controls.push({
     action: "tokenHoverArtGallery",
     icon: "fas fa-images",
@@ -66,6 +67,14 @@ Hooks.on("getHeaderControlsActorSheetV2", (sheet, controls) => {
 /* -------------------------------------------- */
 
 /** A change of the token's art or secret state, by any user, updates the HUD palette and the hover display. */
+/** Refresh only this module's open gallery when its Actor flags are changed. */
+Hooks.on("updateActor", (actor, change) => {
+  if (hasModuleFlagChange(change)
+      || foundry.utils.hasProperty(change, "prototypeToken.flags.token-hover-art")) {
+    HoverArtGallery.refreshIfOpen(actor);
+  }
+});
+
 Hooks.on("updateToken", (tokenDoc, change) => {
   if ( !hasModuleFlagChange(change) ) return;
   refreshTokenHUD(tokenDoc);

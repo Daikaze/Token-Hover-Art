@@ -1,5 +1,15 @@
 # Token Hover Art — Foundry v14 (Daikaze)
 
+## v0.5.3 — Native Foundry V14 gallery
+
+- Migrates the actor/gallery editor from deprecated Application V1 DocumentSheet to native Foundry V14 ApplicationV2.
+- Uses native titlebar, double-click minimization, edge resizing, theme-driven controls, compact galleries, and responsive layout.
+- Keeps gallery permissions, actor flags, image/folder sources, default secret, drag controls, Token HUD palette and individual PC/NPC hover-art sizes unchanged.
+- Gallery updates on Actor flag changes; safely retains scroll position and prevents duplicate windows.
+- Does not change the normal floating hover display into a Foundry window; it remains anchored to hover behavior and the token HUD.
+
+
+
 This is a Foundry VTT v14 adaptation of the original [Token Hover Art by b1o](https://github.com/b1o/foundryvtt-token-hover-art). The original MIT license and existing flags are preserved.
 
 ## v0.5.2 — per-NPC hover art size

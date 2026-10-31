@@ -12,6 +12,15 @@ on:
       - "README.md"
       - "LICENSE"
       - ".github/workflows/release.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "module.json"
+      - "scripts/**"
+      - "styles/**"
+      - "templates/**"
+      - "tests/**"
+      - ".github/workflows/release.yml"
   workflow_dispatch:
 
 permissions:
@@ -42,6 +51,7 @@ jobs:
           fi
           zip -q -r module.zip module.json README.md LICENSE lang scripts styles templates
       - name: Create or update GitHub release
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}

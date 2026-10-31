@@ -560,3 +560,205 @@
   text-align: center;
   font-style: italic;
 }
+
+
+/* ---------------------------------------------------------------
+ * Foundry V14 native gallery — app frame and theme belong to core.
+ * HUD popup and hover image remain purpose-built floating overlays.
+ * Isolated to our ApplicationV2 classes; no global sheet styling.
+ * --------------------------------------------------------------- */
+.application.token-hover-art .window-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  container: tha-gallery-window / inline-size;
+}
+.application.token-hover-art .tha-gallery {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  color: var(--color-text-primary, inherit);
+  background: transparent;
+  font: inherit;
+}
+.application.token-hover-art .tha-gallery > .notes {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 11px 14px;
+  color: var(--color-text-secondary, inherit);
+  font-size: 12px;
+  line-height: 1.4;
+  border-bottom: 1px solid var(--color-border-light-primary, #7776);
+}
+.application.token-hover-art .tha-gallery-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 12px 14px;
+}
+.application.token-hover-art .tha-gallery > .form-group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  padding: 10px 14px;
+  border-top: 1px solid var(--color-border-light-primary, #7776);
+  background: var(--color-bg-option, transparent);
+}
+.application.token-hover-art .tha-gallery .form-fields {
+  display: flex;
+  flex: 1 1 240px;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+}
+.application.token-hover-art .tha-gallery .form-group > label {
+  min-width: 100px;
+  flex: 0 1 130px;
+  margin: 0;
+}
+.application.token-hover-art .tha-gallery .form-group > .hint {
+  flex: 1 1 100%;
+  margin: 0;
+  color: var(--color-text-secondary, inherit);
+}
+.application.token-hover-art .tha-gallery .form-group input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0;
+}
+.application.token-hover-art .tha-section-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px 0 9px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--color-border-light-primary, #7776);
+  color: inherit;
+  font: 600 0.95rem var(--font-primary, inherit);
+}
+.application.token-hover-art .tha-section-title:first-child {margin-top: 0;}
+.application.token-hover-art .tha-section-control {
+  margin-left: auto;
+  width: 30px;
+  min-height: 28px;
+  padding: 3px;
+  font: inherit;
+}
+.application.token-hover-art .tha-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 8px;
+}
+.application.token-hover-art .tha-gallery-item {
+  margin: 0;
+  min-width: 0;
+  border: 1px solid var(--color-border-light-primary, #7776);
+  border-radius: 4px;
+  background: var(--color-bg-option, transparent);
+  box-shadow: none;
+}
+.application.token-hover-art .tha-gallery-item.default {
+  border-color: var(--color-border-highlight, var(--color-focus-outline, #9674b2));
+  box-shadow: none;
+}
+.application.token-hover-art .tha-gallery-item img,
+.application.token-hover-art .tha-gallery-item video {
+  width: 100%;
+  height: 112px;
+  display: block;
+  object-fit: contain;
+}
+.application.token-hover-art .tha-gallery-item figcaption {
+  padding: 4px 6px;
+  font-size: 11px;
+  color: var(--color-text-secondary, inherit);
+}
+.application.token-hover-art .tha-gallery-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 5px 6px;
+}
+.application.token-hover-art .tha-gallery-controls button {
+  display: inline-flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  max-width: 40px;
+  min-width: 27px;
+  min-height: 28px;
+  padding: 3px;
+  cursor: pointer;
+}
+.application.token-hover-art .tha-gallery-controls button:disabled {
+  opacity: .45;
+  pointer-events: none;
+}
+.application.token-hover-art .tha-folder {
+  margin: 0 0 12px;
+  padding: 9px;
+  border: 1px solid var(--color-border-light-primary, #7776);
+  border-radius: 4px;
+  background: var(--color-bg-option, transparent);
+}
+.application.token-hover-art .tha-folder-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+.application.token-hover-art .tha-folder-header .tha-folder-filter {
+  flex: 1 1 115px;
+  min-width: 0;
+  height: auto;
+  font-family: inherit;
+}
+.application.token-hover-art .tha-folder-path {
+  flex: 1 1 170px;
+  min-width: 0;
+}
+.application.token-hover-art .tha-folder-count {
+  border: 1px solid var(--color-border-light-primary, #7776);
+  border-radius: 4px;
+  background: transparent;
+}
+.application.token-hover-art .tha-gallery-empty {
+  color: var(--color-text-secondary, inherit);
+  padding: 8px;
+}
+.application.token-hover-art .tha-gallery button,
+.application.token-hover-art .tha-gallery input {
+  font: inherit;
+}
+.application.token-hover-art .tha-gallery input:focus-visible,
+.application.token-hover-art .tha-gallery button:focus-visible {
+  outline: 2px solid var(--color-focus-outline, var(--color-border-highlight, #9674b2));
+  outline-offset: 1px;
+}
+@container tha-gallery-window (max-width: 520px) {
+  .application.token-hover-art .tha-gallery > .form-group {
+    align-items: stretch;
+  }
+  .application.token-hover-art .tha-gallery > .form-group > label {
+    flex: 1 1 100%;
+  }
+  .application.token-hover-art .tha-gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
+}

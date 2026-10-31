@@ -3,7 +3,7 @@ import { getSetting } from "./settings.mjs";
 import {
   getBaseActor, canManageGallery, getGallery, getSelectedArt, selectArt, clearArt, isSecret, setSecret, isVideo
 } from "./hover-art-data.mjs";
-import { HoverArtGallery } from "./gallery-sheet.mjs";
+import { HoverArtGallery } from "./native-gallery.mjs";
 import { getCompiledTemplate, getHookElement } from "./compat.mjs";
 
 /**

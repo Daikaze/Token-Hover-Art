@@ -16,18 +16,18 @@
         <figcaption>{{path}}</figcaption>
         {{#if ../editable}}
         <nav class="tha-gallery-controls">
-          <a data-action="default" data-tooltip="TOKEN_HOVER_ART.Gallery.Default">
+          <button type="button" data-action="default" data-tooltip="TOKEN_HOVER_ART.Gallery.Default">
             <i class="{{#if isDefault}}fas{{else}}far{{/if}} fa-star"></i>
-          </a>
-          <a data-action="move-left" data-tooltip="TOKEN_HOVER_ART.Gallery.MoveLeft" {{#if isFirst}}class="disabled"{{/if}}>
+          </button>
+          <button type="button" data-action="move-left" data-tooltip="TOKEN_HOVER_ART.Gallery.MoveLeft" {{#if isFirst}}disabled{{/if}}>
             <i class="fas fa-arrow-left"></i>
-          </a>
-          <a data-action="move-right" data-tooltip="TOKEN_HOVER_ART.Gallery.MoveRight" {{#if isLast}}class="disabled"{{/if}}>
+          </button>
+          <button type="button" data-action="move-right" data-tooltip="TOKEN_HOVER_ART.Gallery.MoveRight" {{#if isLast}}disabled{{/if}}>
             <i class="fas fa-arrow-right"></i>
-          </a>
-          <a data-action="remove" data-tooltip="TOKEN_HOVER_ART.Gallery.Remove">
+          </button>
+          <button type="button" data-action="remove" data-tooltip="TOKEN_HOVER_ART.Gallery.Remove">
             <i class="fas fa-trash"></i>
-          </a>
+          </button>
         </nav>
         {{/if}}
       </figure>
@@ -41,9 +41,9 @@
     <h3 class="tha-section-title">
       {{localize "TOKEN_HOVER_ART.Folders.Title"}}
       {{#if canScan}}{{#if folders.length}}
-      <a class="tha-section-control" data-action="rescan-folders" data-tooltip="TOKEN_HOVER_ART.Folders.Rescan">
+      <button type="button" class="tha-section-control" data-action="rescan-folders" data-tooltip="TOKEN_HOVER_ART.Folders.Rescan">
         <i class="fas fa-sync"></i>
-      </a>
+      </button>
       {{/if}}{{/if}}
     </h3>
     {{#each folders}}
@@ -53,7 +53,7 @@
         <span class="tha-folder-path">{{folder}}</span>
         {{#if ../canScan}}
         <input type="text" class="tha-folder-filter" value="{{filter}}" data-tooltip="TOKEN_HOVER_ART.Folders.FilterTooltip">
-        <a data-action="remove-folder" data-tooltip="TOKEN_HOVER_ART.Folders.Remove"><i class="fas fa-trash"></i></a>
+        <button type="button" data-action="remove-folder" data-tooltip="TOKEN_HOVER_ART.Folders.Remove"><i class="fas fa-trash"></i></button>
         {{else}}
         <code class="tha-folder-filter-text">{{filter}}</code>
         {{/if}}
@@ -71,9 +71,9 @@
           <figcaption>{{path}}</figcaption>
           {{#if ../../editable}}
           <nav class="tha-gallery-controls">
-            <a data-action="default" data-tooltip="TOKEN_HOVER_ART.Gallery.Default">
+            <button type="button" data-action="default" data-tooltip="TOKEN_HOVER_ART.Gallery.Default">
               <i class="{{#if isDefault}}fas{{else}}far{{/if}} fa-star"></i>
-            </a>
+            </button>
           </nav>
           {{/if}}
         </figure>
