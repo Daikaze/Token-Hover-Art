@@ -82,6 +82,7 @@ Hooks.on("updateToken", (tokenDoc, change) => {
 });
 
 Hooks.on("renderTokenHUD", onRenderTokenHUD);
+Hooks.on("closeTokenHUD", closeHoverArtPalette);
 Hooks.on("hoverToken", onHoverToken);
 Hooks.on("deleteToken", onDeleteToken);
 Hooks.on("canvasReady", preloadSceneArt);

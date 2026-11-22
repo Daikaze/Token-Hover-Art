@@ -1,8 +1,8 @@
 {
   "id": "token-hover-art",
   "title": "Token Hover Art",
-  "description": "Foundry V14 Token Hover Art: native resizable ApplicationV2 gallery, persistent individual PC/NPC hover-art sizing, unscaled Token HUD palette and uncropped portraits.",
-  "version": "0.5.3",
+  "description": "Foundry V13 Token Hover Art: native resizable ApplicationV2 gallery, persistent individual PC/NPC hover-art sizing, unscaled Token HUD palette and uncropped portraits.",
+  "version": "0.5.4",
   "authors": [
     {
       "name": "b1o",
@@ -14,13 +14,14 @@
     }
   ],
   "url": "https://github.com/Daikaze/Token-Hover-Art",
-  "manifest": "https://github.com/Daikaze/Token-Hover-Art/releases/latest/download/module.json",
-  "download": "https://github.com/Daikaze/Token-Hover-Art/releases/download/v0.5.3/module.zip",
+  "manifest": "https://raw.githubusercontent.com/Daikaze/Token-Hover-Art/foundry-v13/module.json",
+  "download": "https://github.com/Daikaze/Token-Hover-Art/releases/download/foundry-v13-v0.5.4/module.zip",
   "bugs": "https://github.com/Daikaze/Token-Hover-Art/issues",
   "readme": "https://github.com/Daikaze/Token-Hover-Art#readme",
   "compatibility": {
-    "minimum": "14",
-    "verified": "14"
+    "minimum": "13",
+    "maximum": "13",
+    "verified": "13"
   },
   "esmodules": [
     "scripts/main.mjs"

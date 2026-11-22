@@ -2,7 +2,7 @@ name: Publish Foundry Module
 
 on:
   push:
-    branches: [main]
+    branches: [foundry-v13]
     paths:
       - "module.json"
       - "scripts/**"
@@ -13,7 +13,7 @@ on:
       - "LICENSE"
       - ".github/workflows/release.yml"
   pull_request:
-    branches: [main]
+    branches: [foundry-v13]
     paths:
       - "module.json"
       - "scripts/**"
@@ -42,7 +42,7 @@ jobs:
         run: |
           set -euo pipefail
           VERSION="$(jq -r .version module.json)"
-          TAG="v${VERSION}"
+          TAG="foundry-v13-v${VERSION}"
           DOWNLOAD="$(jq -r .download module.json)"
           EXPECTED="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/module.zip"
           if [ "${DOWNLOAD}" != "${EXPECTED}" ]; then
@@ -51,19 +51,19 @@ jobs:
           fi
           zip -q -r module.zip module.json README.md LICENSE lang scripts styles templates
       - name: Create or update GitHub release
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/foundry-v13'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           VERSION="$(jq -r .version module.json)"
-          TAG="v${VERSION}"
+          TAG="foundry-v13-v${VERSION}"
           if gh release view "${TAG}" > /dev/null 2>&1; then
             gh release upload "${TAG}" module.json module.zip --clobber
           else
             gh release create "${TAG}" module.json module.zip \
-              --target "${GITHUB_SHA}" \
+              --latest=false --target "${GITHUB_SHA}" \
               --title "Token Hover Art ${TAG}" \
-              --notes "Foundry VTT v14: unscaled floating art gallery, uncropped portraits and screen-aware HUD positioning."
+              --notes "Foundry VTT v13: unscaled floating art gallery, uncropped portraits and screen-aware HUD positioning."
           fi

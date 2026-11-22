@@ -10,7 +10,7 @@ import {
 import { getFilePickerClass } from "./compat.mjs";
 
 
-/** Native V14 gallery; actor flags and permissions are unchanged. */
+/** Native V13 gallery; actor flags and permissions are unchanged. */
 const {ApplicationV2, HandlebarsApplicationMixin} = foundry.applications.api;
 const ACTIONS = ["browse","add-path","remove","move-left","move-right","default","browse-folder","add-folder","rescan-folders","remove-folder"];
 export class HoverArtGallery extends HandlebarsApplicationMixin(ApplicationV2) {

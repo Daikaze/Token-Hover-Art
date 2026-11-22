@@ -39,7 +39,7 @@ const actor = {
   }
 };
 
-test("native V14 editor uses core frame, resizing and minimization", ()=>{
+test("native V13 editor uses core frame, resizing and minimization", ()=>{
   const o=HoverArtGallery.DEFAULT_OPTIONS;
   assert.equal(o.window.frame,true);
   assert.equal(o.window.resizable,true);
@@ -75,8 +75,8 @@ test("gallery rights block users without GM or gallery-owner access", ()=>{
 });
 test("manifest + CSS isolate native application, preserving token HUD and individual size code", ()=>{
   const manifest=JSON.parse(readFileSync(new URL("../module.json",import.meta.url),"utf8"));
-  assert.equal(manifest.version,"0.5.3");
-  assert.equal(manifest.download,"https://github.com/Daikaze/Token-Hover-Art/releases/download/v0.5.3/module.zip");
+  assert.equal(manifest.version,"0.5.4");
+  assert.equal(manifest.download,"https://github.com/Daikaze/Token-Hover-Art/releases/download/foundry-v13-v0.5.4/module.zip");
   const main=readFileSync(new URL("../scripts/main.mjs",import.meta.url),"utf8");
   const hud=readFileSync(new URL("../scripts/token-hud.mjs",import.meta.url),"utf8");
   assert.ok(main.includes('from "./native-gallery.mjs"'));

@@ -1,8 +1,8 @@
-# Token Hover Art — Foundry v14 (Daikaze)
+# Token Hover Art — Foundry v13 (Daikaze)
 
-## v0.5.3 — Native Foundry V14 gallery
+## v0.5.4 — Native Foundry V13 gallery
 
-- Migrates the actor/gallery editor from deprecated Application V1 DocumentSheet to native Foundry V14 ApplicationV2.
+- Migrates the actor/gallery editor from deprecated Application V1 DocumentSheet to native Foundry V13 ApplicationV2.
 - Uses native titlebar, double-click minimization, edge resizing, theme-driven controls, compact galleries, and responsive layout.
 - Keeps gallery permissions, actor flags, image/folder sources, default secret, drag controls, Token HUD palette and individual PC/NPC hover-art sizes unchanged.
 - Gallery updates on Actor flag changes; safely retains scroll position and prevents duplicate windows.
@@ -10,7 +10,7 @@
 
 
 
-This is a Foundry VTT v14 adaptation of the original [Token Hover Art by b1o](https://github.com/b1o/foundryvtt-token-hover-art). The original MIT license and existing flags are preserved.
+This is a Foundry VTT v13 adaptation of the original [Token Hover Art by b1o](https://github.com/b1o/foundryvtt-token-hover-art). The original MIT license and existing flags are preserved.
 
 ## v0.5.2 — per-NPC hover art size
 
@@ -43,7 +43,7 @@ This is a Foundry VTT v14 adaptation of the original [Token Hover Art by b1o](ht
 Download the module archive from the [Releases page](https://github.com/Daikaze/Token-Hover-Art/releases), or install using:
 
 ```
-https://github.com/Daikaze/Token-Hover-Art/releases/latest/download/module.json
+https://raw.githubusercontent.com/Daikaze/Token-Hover-Art/foundry-v13/module.json
 ```
 
 ## Copyright
@@ -73,7 +73,7 @@ I made this module first for personal use. It has the features that I find usefu
 In the Foundry setup screen, open **Add-on Modules → Install Module**, paste this manifest URL, and click **Install**:
 
 ```
-https://github.com/b1o/foundryvtt-token-hover-art/releases/latest/download/module.json
+https://raw.githubusercontent.com/Daikaze/Token-Hover-Art/foundry-v13/module.json
 ```
 
 Then enable **Token Hover Art** in your world under **Game Settings → Manage Modules**.
@@ -127,23 +127,11 @@ The gallery is the manual images plus the files of all folders, without duplicat
 
 ## Compatibility
 
-The module supports Foundry VTT v11 and later. `scripts/compat.mjs` holds every core API that moved between versions. Each lookup tries the new namespaced location first and falls back to the v11/v12 global, so v13 logs no deprecation warnings for these APIs.
-
-| Version | Status |
-|---|---|
-| v11 (11.314) | Tested |
-| v12 | Not tested yet. All used APIs exist in the installed v12 source. |
-| v13 | Not tested yet. The API locations come from the v13 API documentation. Not confirmed there: the Token HUD markup (`.col.left`) and the text field markup of the settings window (used for the color pickers; without them, the color settings are plain text fields). |
-
-Known future change: the gallery window uses Application V1, because ApplicationV2 does not exist in v11. Application V1 is deprecated since v13. When a later core version removes it, the gallery window must move to ApplicationV2.
+This release targets Foundry VTT v13. The gallery uses ApplicationV2 and opens from either legacy or modern actor sheets. The module has no game-system dependency.
 
 ## Release a new version
 
-1. In `module.json`, set `version` (for example `0.4.0`), and set `download` to the same tag: `.../releases/download/v0.4.0/module.zip`.
-2. Commit and push the change.
-3. On GitHub, publish a release with the tag `v0.4.0`.
-
-The release workflow then checks that the tag matches `module.json`, builds `module.zip`, and attaches `module.json` and `module.zip` to the release. The manifest URL always points to the latest release, so installed copies see the update.
+Update the version and versioned download URL in module.json, then push the change to foundry-v13. The release workflow tests the module and publishes its ZIP and manifest.
 
 ## Settings
 
