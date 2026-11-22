@@ -1,5 +1,9 @@
 # Token Hover Art — Foundry v14 (Daikaze)
 
+## v0.5.5 — Stable Foundry V14 updater
+
+Use the V14 `main/module.json` manifest, not `releases/latest/download/module.json`, because this repository also publishes Foundry V13 releases. The V14 ZIP is pinned to `v0.5.5`.
+
 ## v0.5.3 — Native Foundry V14 gallery
 
 - Migrates the actor/gallery editor from deprecated Application V1 DocumentSheet to native Foundry V14 ApplicationV2.
@@ -43,7 +47,7 @@ This is a Foundry VTT v14 adaptation of the original [Token Hover Art by b1o](ht
 Download the module archive from the [Releases page](https://github.com/Daikaze/Token-Hover-Art/releases), or install using:
 
 ```
-https://github.com/Daikaze/Token-Hover-Art/releases/latest/download/module.json
+https://raw.githubusercontent.com/Daikaze/Token-Hover-Art/main/module.json
 ```
 
 ## Copyright
@@ -143,7 +147,7 @@ Known future change: the gallery window uses Application V1, because Application
 2. Commit and push the change.
 3. On GitHub, publish a release with the tag `v0.4.0`.
 
-The release workflow then checks that the tag matches `module.json`, builds `module.zip`, and attaches `module.json` and `module.zip` to the release. The manifest URL always points to the latest release, so installed copies see the update.
+The release workflow then checks that the tag matches `module.json`, builds `module.zip`, and attaches `module.json` and `module.zip` to the release. The V14 manifest URL points to `main/module.json` rather than the latest release, preventing V13/V14 release collisions. Versioned downloads still come from matching GitHub release tags.
 
 ## Settings
 
